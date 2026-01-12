@@ -1,0 +1,18 @@
+// manifest.json
+{
+  "name": "Log It & Yeet It",
+  "short_name": "Yeet It",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f8f8",
+  "theme_color": "#0b3d3b",
+  "description": "Fast capture (yeet) + retrieval (yoink), iPhone-first.",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20192%20192'%3E%3Crect%20width='192'%20height='192'%20rx='40'%20fill='%230b3d3b'/%3E%3Cpath%20d='M44%20102c32-10%2064-22%20104-54-14%2048-46%2080-104%2054Z'%20fill='%23ffffff'/%3E%3Cpath%20d='M54%20118c40%2010%2070-10%2098-38-10%2042-50%2064-98%2038Z'%20fill='%23cfe7e6'/%3E%3Ctext%20x='96'%20y='168'%20text-anchor='middle'%20font-family='Arial'%20font-size='22'%20fill='%23ffffff'%20font-weight='700'%3EYEET%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

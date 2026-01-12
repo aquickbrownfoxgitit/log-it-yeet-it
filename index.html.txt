@@ -1,0 +1,176 @@
+<!-- index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b3d3b" />
+
+  <title>Log It & Yeet It</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- iOS friendliness -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+</head>
+
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand__title">Log It & Yeet It</div>
+      <div class="brand__subtitle">iPhone-first capture + retrieval</div>
+    </div>
+  </header>
+
+  <main class="app" id="app">
+    <!-- Tabs -->
+    <nav class="tabs" aria-label="Primary navigation">
+      <button class="tab is-active" data-tab="log" type="button">Put It Here</button>
+      <button class="tab" data-tab="master" type="button">Find It All</button>
+      <button class="tab" data-tab="search" type="button">Look It Up</button>
+    </nav>
+
+    <!-- LOG PAGE -->
+    <section class="page is-active" id="page-log" data-page="log">
+      <div class="card">
+        <h2 class="card__title">Put It Here</h2>
+        <p class="card__hint">Open → log → YEET → gone.</p>
+
+        <form id="logForm" autocomplete="off">
+          <label class="field">
+            <span class="field__label">Item <span class="req">(required)</span></span>
+            <input id="fItem" name="item" type="text" inputmode="text" placeholder="e.g., Chapstick" required />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Location <span class="opt">(optional)</span></span>
+            <input id="fLocation" name="location" type="text" inputmode="text" placeholder="e.g., Hall closet" />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Inventory <span class="opt">(optional)</span></span>
+            <input id="fInventory" name="inventory" type="text" inputmode="numeric" placeholder="e.g., 2" />
+          </label>
+
+          <label class="field">
+            <span class="field__label">Date <span class="opt">(optional)</span></span>
+            <input id="fDate" name="date" type="date" />
+          </label>
+
+          <details id="notesDetails" class="details">
+            <summary>+ Notes (optional)</summary>
+            <label class="field field--compact">
+              <span class="field__label sr-only">Notes</span>
+              <textarea id="fNotes" name="notes" rows="3" placeholder="Only if helpful. Leave blank most of the time."></textarea>
+            </label>
+          </details>
+
+          <div class="actions">
+            <button class="btn btn--primary" id="btnYeet" type="submit">YEET</button>
+            <button class="btn" id="btnYoink" type="button" data-go="search">YOINK</button>
+          </div>
+
+          <div class="tiny" id="logStatus" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- MASTER PAGE -->
+    <section class="page" id="page-master" data-page="master">
+      <div class="card">
+        <div class="card__row">
+          <h2 class="card__title">Find It All</h2>
+          <div class="card__rowRight">
+            <button class="btn btn--ghost" id="btnRefresh" type="button">Refresh</button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="toolbar__group">
+            <button class="btn" id="btnExport" type="button">Export JSON</button>
+            <label class="btn btn--file">
+              Import JSON
+              <input id="importFile" type="file" accept="application/json" />
+            </label>
+          </div>
+          <div class="toolbar__meta" id="countMeta"></div>
+        </div>
+
+        <div class="list" id="masterList" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- SEARCH PAGE -->
+    <section class="page" id="page-search" data-page="search">
+      <div class="card">
+        <h2 class="card__title">Look It Up</h2>
+        <p class="card__hint">Search across Item, Location, Notes.</p>
+
+        <label class="field">
+          <span class="field__label">Seek</span>
+          <input id="q" type="search" placeholder='Try: "Costco" or "garage" or "deodorant"' />
+        </label>
+
+        <div class="list" id="searchList" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- EDIT MODAL -->
+  <dialog class="modal" id="editModal">
+    <form method="dialog" class="modal__panel" id="editForm">
+      <div class="modal__header">
+        <div>
+          <div class="modal__title">Edit Entry</div>
+          <div class="modal__meta" id="editMeta"></div>
+        </div>
+        <button class="btn btn--ghost" type="button" id="btnCloseModal" aria-label="Close">✕</button>
+      </div>
+
+      <div class="modal__body">
+        <input type="hidden" id="eId" />
+
+        <label class="field">
+          <span class="field__label">Item <span class="req">(required)</span></span>
+          <input id="eItem" type="text" required />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Location <span class="opt">(optional)</span></span>
+          <input id="eLocation" type="text" />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Inventory <span class="opt">(optional)</span></span>
+          <input id="eInventory" type="text" inputmode="numeric" />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Date <span class="opt">(optional)</span></span>
+          <input id="eDate" type="date" />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Notes <span class="opt">(optional)</span></span>
+          <textarea id="eNotes" rows="4" placeholder="Add clarity only if it earns its keep."></textarea>
+        </label>
+      </div>
+
+      <div class="modal__actions">
+        <button class="btn btn--danger" type="button" id="btnDelete">Delete</button>
+        <div class="modal__actionsRight">
+          <button class="btn" type="button" id="btnCancel">Cancel</button>
+          <button class="btn btn--primary" type="button" id="btnSave">Save Updates</button>
+        </div>
+      </div>
+      <div class="tiny" id="editStatus" aria-live="polite"></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
